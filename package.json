@@ -2,6 +2,7 @@
   "name": "redlightgreenlight",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://BerniDev.github.io/redlightgreenlight/",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -9,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "serve": "npm run build && npm run preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist -b pages"
   },
   "dependencies": {
     "cypress": "^13.14.2",
