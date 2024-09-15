@@ -1,8 +1,8 @@
 const CACHE_NAME = 'redlightgreenlight-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
+  // '/redlightgreenlight/',
   '/redlightgreenlight/', // Ruta base
+  '/redlightgreenlight/index.html',
   '/redlightgreenlight/main.js', // Ajusta según tu estructura de archivos
   '/redlightgreenlight/squidgame.mp3',
   // Agrega todos los recursos estáticos que tu aplicación necesita para funcionar offline
