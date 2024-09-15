@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "serve": "npm run build && npm run preview",
     "deploy": "gh-pages -d dist -b pages"
+
   },
   "dependencies": {
     "cypress": "^13.14.2",
