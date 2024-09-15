@@ -8,20 +8,20 @@ export interface IGameContext {
   maxScore: number;
   ranking: Ranking;
   setMaxScore: (newScore: number) => void;
+  addPlayerToRanking: (newPlayerName: string) => void;
   setPlayer: (newUser: string) => void;
   setRanking: (newRanking: Ranking) => void;
-  emptyLocalStorage: () => void;
 }
 
 export const GameContext = createContext({} as IGameContext);
 
 const GameProvider = ({ children }: IProvider) => {
-  const [playerName, setPlayerName, removePlayerName] = useLocalStorage(
+  const [playerName, setPlayerName] = useLocalStorage(
     "player",
     ""
   );
   const [maxScore, setMaxScore] = useState(0);
-  const [ranking, setRanking, removeRanking] = useLocalStorage<Ranking>(
+  const [ranking, setRanking] = useLocalStorage<Ranking>(
     "ranking",
     []
   );
@@ -31,6 +31,7 @@ const GameProvider = ({ children }: IProvider) => {
       (player: PlayerInfo) => player.name === playerName
     );
     if (rankedPlayer) setMaxScore(rankedPlayer.score);
+    else setMaxScore(0);
   }, [playerName, ranking, setMaxScore]);
 
   const setPlayer = useCallback(
@@ -45,23 +46,36 @@ const GameProvider = ({ children }: IProvider) => {
       const isRankedPlayer = ranking.some(
         (player: PlayerInfo) => player.name === playerName
       );
-      setMaxScore(newScore);
       if (isRankedPlayer) {
         const updatedRanking = ranking.map((player) =>
           player.name === playerName ? { ...player, score: newScore } : player
         );
-        setRanking(updatedRanking);
+        const orderedRanking = updatedRanking.sort((a, b) => b.score - a.score);
+        setRanking(orderedRanking);
+        setMaxScore(newScore);
       } else {
-        setRanking([...ranking, { name: playerName, score: newScore }]);
+        const newOrderedRanking = [
+          ...ranking,
+          { name: playerName, score: newScore },
+        ].sort((a, b) => b.score - a.score);
+        setRanking(newOrderedRanking);
       }
     },
     [playerName, ranking, setRanking, setMaxScore]
   );
 
-  const emptyLocalStorage = useCallback(() => {
-    removePlayerName();
-    removeRanking();
-  }, [removePlayerName, removeRanking]);
+  const addPlayerToRanking = (newPlayerName: string) => {
+    const isRankedPlayer = ranking.some(
+      (player: PlayerInfo) => player.name === playerName
+    );
+    if(!isRankedPlayer){
+      const newOrderedRanking = [
+        ...ranking,
+        { name: newPlayerName, score: 0 },
+      ].sort((a, b) => b.score - a.score);
+      setRanking(newOrderedRanking);
+    }
+  }
 
   const contextValue = useMemo(
     () => ({
@@ -69,19 +83,19 @@ const GameProvider = ({ children }: IProvider) => {
       maxScore,
       ranking,
       setMaxScore: updateRankingWithMaxScore,
+      addPlayerToRanking,
       setPlayer,
       setRanking,
-      emptyLocalStorage,
-    }),
+      }),
     [
       playerName,
       maxScore,
       ranking,
       updateRankingWithMaxScore,
+      addPlayerToRanking,
       setPlayer,
       setRanking,
-      emptyLocalStorage,
-    ]
+      ]
   );
 
   return (

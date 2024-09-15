@@ -1,7 +1,7 @@
 import { HomePage } from "./pages/home.page";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { AppRoutes } from "./routes";
-import { Layout } from "./components/Layout";
+import { Layout } from "./components/layout";
 import { Game } from "./pages/game.page";
 import { Ranking } from "./pages/ranking.page";
 import { GameProvider } from "./context/game.context";

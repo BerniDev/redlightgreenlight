@@ -4,11 +4,12 @@ import { GameContext } from "../context/game.context";
 import { AppRoutes } from "../routes";
 
 function HomePage() {
-  const { playerName, setPlayer } = useContext(GameContext);
+  const { playerName, setPlayer, addPlayerToRanking } = useContext(GameContext);
   const navigate = useNavigate();
 
   const handleJoin = () => {
     if (playerName) {
+      addPlayerToRanking(playerName);
       navigate(AppRoutes.Game);
     }
   };
@@ -18,8 +19,18 @@ function HomePage() {
       <h1>HOME</h1>
       <h3>Create new player</h3>
       <label>Name</label>
-      <input value={playerName} onChange={(e) => setPlayer(e.target.value)} />
-      <button onClick={handleJoin} disabled={!playerName}>
+      <input
+        className="primary"
+        value={playerName}
+        onChange={(e) => setPlayer(e.target.value)}
+        data-testid="username-input"
+      />
+      <button
+        onClick={handleJoin}
+        className="primary"
+        disabled={!playerName}
+        data-testid="join-button"
+      >
         Join
       </button>
     </div>
