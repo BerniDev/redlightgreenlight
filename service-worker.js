@@ -1,3 +1,13 @@
+const CACHE_NAME = 'redlightgreenlight-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/redlightgreenlight/', // Ruta base
+  '/redlightgreenlight/main.js', // Ajusta según tu estructura de archivos
+  '/redlightgreenlight/squidgame.mp3',
+  // Agrega todos los recursos estáticos que tu aplicación necesita para funcionar offline
+];
+
 // Durante la instalación, cachea los recursos
 self.addEventListener("install", (event) => {
   event.waitUntil(
